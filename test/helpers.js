@@ -60,7 +60,8 @@ module.exports = {
                     'properties': {
                         'street': {
                             'type': 'string',
-                            'required': true
+                            'required': true,
+                            'format': 'street'
                         },
                         'country': {
                             'type': 'string',

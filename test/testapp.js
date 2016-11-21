@@ -4,6 +4,7 @@ var express = require('express'),
     validate = require('../index.js').validate,
     SchemaError = require('jsonschema'),
     addSchemaProperties = require('../index.js').addSchemaProperties,
+    addSchemaFormats = require('../index.js').addSchemaFormats,
     app = express();
 
 function clearBody(req, res, next) {
@@ -24,6 +25,12 @@ addSchemaProperties({
         if (instance.indexOf(schema.contains) < 0) {
             return 'does not contain the string ' + JSON.stringify(schema.contains);
         }
+    }
+});
+
+addSchemaFormats({
+    street: function(value){
+        return /[^%$*@!`~]$/.test(value);
     }
 });
 

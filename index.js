@@ -5,6 +5,7 @@
 
 
 var jsonschema = require('jsonschema'),
+    customFormats = {},
     customProperties = {};
 
 
@@ -102,6 +103,25 @@ function JsonSchemaValidation(validations) {
     this.validations = formatValidations(validations);
 }
 
+/**
+   @function addSchemaFormats
+
+   @desc Updates customFormats with
+       the newFormats param.  Provides a way for client
+       to extend JSON Schema validations.
+
+   @public
+
+   @param {Object} newFormats - An object where the keys are the
+          names of the new schema formats and the values are the respective
+          functions that implement the validation.
+*/
+
+function addSchemaFormats(newFormats) {
+    Object.keys(newFormats).forEach(function(attr) {
+        customFormats[attr] = newFormats[attr];
+    });
+}
 
 /**
    @function addSchemaProperties
@@ -169,6 +189,10 @@ function validate(schemas, schemaDependencies) {
     Object.keys(customProperties).forEach(function(attr) {
         validator.attributes[attr] = customProperties[attr];
     });
+    
+    Object.keys(customFormats).forEach(function(attr) {
+        validator.customFormats[attr] = customFormats[attr];
+    });
 
     return function(req, res, next) {
         var validations = {};
@@ -195,6 +219,7 @@ function validate(schemas, schemaDependencies) {
 
 exports = module.exports;
 exports.validate = validate;
+exports.addSchemaFormats = addSchemaFormats;
 exports.addSchemaProperties = addSchemaProperties;
 exports.JsonSchemaValidation = JsonSchemaValidation;
 exports.JsonSchemaCustomPropertyError = JsonSchemaCustomPropertyError;

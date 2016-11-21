@@ -188,6 +188,24 @@ addSchemaProperties({
 ```
 See [jsonschema's how to create custom properties](https://github.com/tdegrunt/jsonschema#custom-properties).
 
+## Creating custom schema formats
+
+While JSON schema comes with several validation formats out of the box, you may want to add your own
+custom formats. `addSchemaFormats` allows you to add additional formats that can be used in your
+schemas. It should be called once at the beginning of your application so that your schemas will
+have the custom formats available.
+
+```javascript
+var addSchemaFormats = require('express-jsonschema').addSchemaFormats;
+
+addSchemaFormats({
+    customFormat: function(value){
+        ...
+    }
+});
+```
+See [jsonschema's how to create custom formats](https://github.com/tdegrunt/jsonschema#formats).
+
 ## Complex example, with split schemas and references
 
 ```js
